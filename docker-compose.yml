@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  camunda-test-api:
+    image: 'image-fastapi'
+    container_name: camunda-test-api
+    build: .
+    ports:
+      - '8500:8500'
+      - '5678:5678'
+    volumes:
+      - ./app:/app
+    command: ["sh", "-c", "pip install debugpy -t /tmp && python /tmp/debugpy --wait-for-client --listen 0.0.0.0:5678 -m uvicorn app:app --host 0.0.0.0 --port 8500 --reload"]
+    networks:
+     - camunda-platform_camunda-platform
+
+networks:
+  camunda-platform_camunda-platform:
+    external: true
